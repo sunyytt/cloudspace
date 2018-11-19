@@ -1,0 +1,52 @@
+server:
+  port: 9999
+#服务器发现注册配置
+eureka:
+  client:
+    serviceUrl:
+      #配置服务中心(可配置多个,用逗号隔开)
+      defaultZone: http://127.0.0.1:8090/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+spring:
+  application:
+    name: zuul-server
+#API网关配置
+zuul:
+  host:
+    socket-timeout-millis: 60000
+    connect-timeout-millis: 60000
+  #路由配置
+  routes:
+    oauth2:    #认证服务
+      #响应的路径
+      path: /auth/**
+      #敏感头信息
+      sensitiveHeaders:
+      #重定向到的服务（根据服务id名称从注册中心获取服务地址）
+      serviceId:  oauth2
+    producer: #生产者服务
+      #响应的路径
+      path: /producer/**
+      sensitiveHeaders:
+      #重定向到的服务（根据服务id名称从注册中心获取服务地址）
+      serviceId:  producer-server
+    user:
+      path: /user/**
+      sensitiveHeaders:
+      serviceId: user-server
+  #添加代理头
+  add-proxy-headers: true
+
+#com.netflix.zuul.exception.ZuulException: Forwarding error
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000

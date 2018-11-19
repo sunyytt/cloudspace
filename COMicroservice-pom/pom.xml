@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.highFine</groupId>
+    <artifactId>COMicroservice-pom</artifactId>
+    <version>1.0.RELEASE</version>
+    <packaging>pom</packaging>
+    <description>此项目为版本控制</description>
+    <!-- 这里集中定义整个项目里边所有第三方依赖的版本及其他可作用于所有pom的常量 -->
+    <properties>
+        <commom.version>1.0</commom.version>
+        <api.version>1.0</api.version>
+        <admin.version>1.0</admin.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <fastjson.version>1.2.44</fastjson.version>
+        <junit.version>4.12</junit.version>
+        <cloud.version>Edgware.SR5</cloud.version>
+        <boot.version>1.5.16.RELEASE</boot.version>
+    </properties>
+
+    <!-- 这里集中陈列整个项目需要用到的第三方依赖及其版本 -->
+    <dependencyManagement>
+        <dependencies>
+            <!--父模块可以将子模块设定为依赖，例如提供整个maven项目最基础的功能-->
+            <dependency>
+                <!--<groupId>org.springframework.boot</groupId>-->
+                <!--<artifactId>spring-boot-starter-parent</artifactId>-->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <!--必须依赖-->
+    <dependencies>
+        <!--FastJson是阿里的开源框架-->
+        <!--<dependency>-->
+            <!--<groupId>com.alibaba</groupId>-->
+            <!--<artifactId>fastjson</artifactId>-->
+            <!--<version>${fastjson.version}</version>-->
+        <!--</dependency>-->
+
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.3</version>
+                    <configuration>
+                        <source>${maven.compiler.source}</source>
+                        <target>${maven.compiler.target}</target>
+                        <encoding>UTF-8</encoding><!-- 字符集编码 -->
+                        <skipTests>true</skipTests><!-- 跳过测试 -->
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>aphrodite-third-party</id>
+            <name>Releases</name>
+            <url>http://localhost:8081/repository/aphrodite-third-party/</url>
+        </repository>
+        <!--<snapshotRepository>-->
+        <!--<id>nexus-snapshots</id>-->
+        <!--<name>Snapshots</name>-->
+        <!--<url>http://localhost:8081/repository/maven-snapshots/</url>-->
+        <!--</snapshotRepository>-->
+    </distributionManagement>
+
+</project>

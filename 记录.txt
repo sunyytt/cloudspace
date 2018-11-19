@@ -1,0 +1,38 @@
+根据教程 https://www.imooc.com/article/47333
+
+生成密钥：
+keytool -genkeypair -alias cnsesan-jwt -validity 3650 -keyalg RSA -dname "CN=jwt,OU=cnsesan,O=cnsesan,L=zurich,S=zurich,C=CH" -keypass cnsesan123 -keystore cnsesan-jwt.jks -storepass cnsesan123
+
+生成公钥： 需要安装openssl
+keytool -list -rfc --keystore cnsesan-jwt.jks | openssl x509 -inform pem -pubkey
+-----BEGIN PUBLIC KEY-----
+XXX
+-----END PUBLIC KEY-----
+
+注册：
+http://localhost:8092/user/register?username=sunyy&password=123456
+登陆：
+http://localhost:8092/user/login?username=sunyy&password=123456
+测试token 
+http://localhost:8092/hi
+headers:
+Authorization =bearer +access_token
+
+
+得到token 如下
+curl user-service:123456@localhost:7890/oauth/token -d grant_type=password -d username=ts -d password=123456
+
+{
+"access_token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NDIxMDM0MDIsInVzZXJfbmFtZSI6InRzIiwianRpIjoiOWIxZGI3ODgtN2ZmOC00OTlkLTlmNGMtZjAwYmM0ZmYyNTI3IiwiY2xpZW50X2lkIjoidXNlci1zZXJ2aWNlIiwic2NvcGUiOlsic2VydmljZSJdfQ.TgWA879thBpDHK8LRpRJ7L9PfwMtnVGlJqUNReMt_TCNx_RExV1rnbsbO8Rv21XGIlEJ1X-7n9-RLINln5Q6PkzNdtwb5QAulKU9xjo-skYqvNRQNy_7in0pHVxi63ikqn6DlQBRdNWZrbI7PRhfUN6joNG1ul4D5ZJ-NUgIm7j3Oy_kGCfMyyI_EHN1kbarBXh-p_6PjNB8_NuTH4QQLAA1-oH9kGuw5AnIU1V0HEptdniqfFrE_AiI1pGUJNrBfX67kFRey46R3K7CH8PeTmXZDpbvBtCz5wQuKtFsvwN_pdetP9JMrcQPhM3vOxKoHwZmkTqoJXo1xWuIRCMKxg",
+"token_type":"bearer",
+"refresh_token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NDQ2OTE4MDIsInVzZXJfbmFtZSI6InRzIiwianRpIjoiYzk0NTRjNTEtNTY2MS00NzQ2LWJjYTItOGMyYjZkMTAxYTQ2IiwiY2xpZW50X2lkIjoidXNlci1zZXJ2aWNlIiwic2NvcGUiOlsic2VydmljZSJdLCJhdGkiOiI5YjFkYjc4OC03ZmY4LTQ5OWQtOWY0Yy1mMDBiYzRmZjI1MjcifQ.cjpMFOXP32fzymfKZaDO3t-PK46JY-8-6eMBiYYtoNh5ZHNKET0gsj_pFZqa9bLOOKzV_aqjVUH4rOSxPUH3q_mNY8eqkgcN9BdBJMmTROyuDV9Le2cPPFvTziYUZSTWctNSQ8I0eB7G_ffUAjz5fJ5-ew5cLI7Z_YGSHcl5Yy6P3h8cSd_wVRpebE0fPjGR4qA7FAmRcOz-JYbkCH43903j4YQ8UJuH4N1hZijsN1TXwY5qsPmASuxTMF5Y1NqalkKB8anVMRtVfY36PbKoRhrkben0QxjwR5OQrEWvxR4kOUsNL241882Ya_rMpSaQa3VhUfzYwLzmmiYDDzZONA",
+"expires_in":3599,
+"scope":"service",
+"jti":"9b1db788-7ff8-499d-9f4c-f00bc4ff2527"
+}
+
+
+boolean enabled = true;//是不是激活的
+boolean accountNonExpired = true;//账户是否过期
+boolean credentialsNonExpired = true;//认证是否过期
+boolean accountNonLocked = true;//是否锁定
